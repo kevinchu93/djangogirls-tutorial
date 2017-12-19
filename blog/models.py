@@ -21,3 +21,9 @@ class Post(models.Model):
         
 
 # Create your models here.
+
+class Comment(models.Model):
+    text = models.TextField()
+    created_date = models.DateTimeField(
+            default=timezone.now
+            )
