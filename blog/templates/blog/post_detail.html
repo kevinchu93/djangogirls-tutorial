@@ -9,7 +9,7 @@
         {% elif user.is_authenticated %}
         <a class="btn btn-default" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
         {% endif %}
-        <a class="btn btn-default" href="{% url 'post_comment' pk=post.pk %}">Comment</a>
+        <a class="btn btn-default" href="{% url 'post_comment' pk=post.pk %}">Add Comment</a>
         {% if user.is_authenticated %}
         <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></a>
         <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}"><span class="glyphicon glyphicon-trash"></a>
@@ -17,9 +17,17 @@
         <h1>{{ post.title }}</h1>
         <p>{{ post.text|linebreaksbr }}</p>
     </div>
-    <div>
-        {% for comment in comments %}
-            <p>{{ comment.text }}</p>
-        {% endfor %}
-    </div>
-{% endblock %}
+        {% for comment in post.comments.all %}
+            <div class="comment">
+                <div class="date">{{ comment.created_date }}</div>
+                <strong>{{ comment.author }}</strong>
+                <p>{{ comment.text|linebreaks }}<p>
+                {% if not comment.approved_comment %}
+                    <a class="btn btn-default" href="{% url 'comment_approve' pk=comment.pk %}">Comment Approve</a>
+                {% endif %}
+                <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}">Comment Remove</a>
+            </div>
+        {% empty %}
+            <p>No comments here yet :(</p>
+            {% endfor %}
+            {% endblock %}

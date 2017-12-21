@@ -10,4 +10,6 @@ urlpatterns = [
         url(r'^unpublished/$', views.post_unpublished_list, name='post_unpublished_list'),
         url(r'^post/(?P<pk>\d+)/publish/$', views.post_publish, name='post_publish'),
         url(r'^post/(?P<pk>\d+)/comment/$', views.post_comment, name='post_comment'),
+        url(r'^comment/(?P<pk>\d+)/approve/$', views.comment_approve, name='comment_approve'),
+        url(r'^comment/(?P<pk>\d+)/remove/$', views.comment_remove, name='comment_remove'),
         ]

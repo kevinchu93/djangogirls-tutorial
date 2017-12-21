@@ -15,8 +15,8 @@ def post_unpublished_list(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    comments = Comment.objects.all()
-    return render(request, 'blog/post_detail.html', {'post': post, 'comments': comments})
+#    comments = Comment.objects.all()
+    return render(request, 'blog/post_detail.html', {'post': post})
 
 @login_required
 def post_new(request):
@@ -64,8 +64,21 @@ def post_comment(request, pk):
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
+            comment.post = get_object_or_404(Post, pk=pk) 
             comment.save()
-            return redirect('post_detail', pk=pk)
+            return redirect('post_detail', pk=comment.post.pk)
     else:
-        form = CommentForm()
+        form = CommentForm(initial={'author': ""})
     return render(request, 'blog/post_comment.html', {'form': form})
+
+@login_required
+def comment_approve(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    comment.approve_comment()
+    return redirect('post_detail', pk=comment.post.pk)
+
+@login_required
+def comment_remove(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    comment.delete()
+    return redirect('post_detail', pk=comment.post.pk)

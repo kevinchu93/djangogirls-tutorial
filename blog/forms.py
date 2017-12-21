@@ -15,7 +15,8 @@ class CommentForm(forms.ModelForm):
 
     class Meta:
         model = Comment
-        fields = ('text',)
+        fields = ('author', 'text',)
         widgets = {
-                'text': forms.TextInput(attrs={'Plcaeholder': 'comment'}),
+                'author': forms.TextInput(attrs={'Placeholder': 'author'}),
+                'text': forms.TextInput(attrs={'Placeholder': 'comment'}),
                 }

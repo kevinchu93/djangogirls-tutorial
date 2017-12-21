@@ -18,12 +18,24 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+    def approved_comments(self):
+        return self.comments.filter(approved_comment=True)
+
         
 
 # Create your models here.
 
 class Comment(models.Model):
+    post = models.ForeignKey('Post', related_name='comments', default=1)
+    author = models.CharField(max_length=200, default="Annonymous")
     text = models.TextField()
-    created_date = models.DateTimeField(
-            default=timezone.now
-            )
+    created_date = models.DateTimeField(default=timezone.now)
+    approved_comment = models.BooleanField(default=False)
+
+    def approve_comment(self):
+        self.approved_comment = True
+        self.save()
+
+#    def __str__(self):
+#        return self.text
+
